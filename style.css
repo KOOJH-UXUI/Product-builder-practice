@@ -1,129 +1,65 @@
-:root {
-    --primary-color: #4a90e2;
-    --background-color: #f0f4f8;
-    --text-color: #333;
-    --surface-color: #ffffff;
-    --muted-color: #5b6b7a;
-    --white: #fff;
-    --border-radius: 8px;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --focus-ring: 0 0 0 3px rgba(74, 144, 226, 0.35);
-}
-
-[data-theme="dark"] {
-    --primary-color: #7db4ff;
-    --background-color: #0f1720;
-    --text-color: #e4edf6;
-    --surface-color: #182433;
-    --muted-color: #9bb0c6;
-    --white: #0f1720;
-    --shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
-    --focus-ring: 0 0 0 3px rgba(125, 180, 255, 0.4);
-}
-
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
 }
 
-#app {
-    background: var(--surface-color);
-    padding: 2rem;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    text-align: center;
+.container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
 }
 
 h1 {
-    color: var(--primary-color);
-    margin: 0;
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
 }
 
-.app-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-}
-
-.theme-toggle {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    background: transparent;
-    color: var(--muted-color);
-    padding: 8px 12px;
-    border-radius: 999px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-}
-
-[data-theme="dark"] .theme-toggle {
-    border-color: rgba(255, 255, 255, 0.2);
-}
-
-.theme-toggle:hover {
-    color: var(--text-color);
-    transform: translateY(-1px);
-}
-
-.theme-toggle:focus-visible {
-    outline: none;
-    box-shadow: var(--focus-ring);
-}
-
-.lotto-numbers-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 1.5rem;
-}
-
-.lotto-number {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: var(--primary-color);
-    color: var(--white);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5rem;
+form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
     font-weight: bold;
 }
 
-#generate-btn {
-    background-color: var(--primary-color);
-    color: var(--white);
+form input[type="text"],
+form input[type="email"],
+form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* Ensures padding doesn't increase width */
+}
+
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+form button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
     border: none;
-    padding: 10px 20px;
-    border-radius: var(--border-radius);
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
+    font-size: 16px;
+    width: 100%;
 }
 
-#generate-btn:hover {
-    background-color: #357abd;
-}
-
-[data-theme="dark"] #generate-btn:hover {
-    background-color: #5f9be4;
-}
-
-@media (max-width: 480px) {
-    #app {
-        width: min(90vw, 360px);
-        padding: 1.5rem;
-    }
-
-    .app-header {
-        flex-direction: column;
-    }
+form button:hover {
+    background-color: #0056b3;
 }
