@@ -1,13 +1,13 @@
 const URL = "https://teachablemachine.withgoogle.com/models/Y1UzowJKE/";
 
 let model;
-let webcam;
-let rafId;
-let maxPredictions = 0;
+let classLabels = [];
+let objectUrl = null;
 
-const startBtn = document.getElementById("start-btn");
-const stopBtn = document.getElementById("stop-btn");
-const webcamContainer = document.getElementById("webcam-container");
+const imageInput = document.getElementById("image-input");
+const resetBtn = document.getElementById("reset-btn");
+const imageContainer = document.getElementById("image-container");
+const previewImage = document.getElementById("preview-image");
 const labelContainer = document.getElementById("label-container");
 const statusEl = document.getElementById("status");
 const resultTitle = document.getElementById("result-title");
@@ -34,7 +34,7 @@ const setResult = (type, score) => {
   } else {
     resultEmoji.textContent = "✨";
     resultTitle.textContent = "믹스 매력형";
-    resultDesc.textContent = "강아지/고양이 느낌이 비슷해요. 각도나 조명을 바꿔보세요.";
+    resultDesc.textContent = "강아지/고양이 느낌이 비슷해요. 다른 사진도 시도해 보세요.";
   }
 };
 
@@ -44,20 +44,20 @@ const clearLabels = () => {
 
 const createLabelRows = (classes) => {
   clearLabels();
-  classes.forEach((item) => {
+  classes.forEach((name) => {
     const row = document.createElement("div");
     row.className = "label-row";
 
     const top = document.createElement("div");
     top.className = "label-top";
 
-    const name = document.createElement("span");
-    name.textContent = item.className;
+    const label = document.createElement("span");
+    label.textContent = name;
 
     const value = document.createElement("span");
     value.textContent = "0%";
 
-    top.appendChild(name);
+    top.appendChild(label);
     top.appendChild(value);
 
     const bar = document.createElement("div");
@@ -69,6 +69,14 @@ const createLabelRows = (classes) => {
     row.appendChild(bar);
 
     labelContainer.appendChild(row);
+  });
+};
+
+const resetLabelRows = () => {
+  const rows = labelContainer.querySelectorAll(".label-row");
+  rows.forEach((row) => {
+    row.querySelector(".label-top span:last-child").textContent = "0%";
+    row.querySelector(".progress span").style.width = "0%";
   });
 };
 
@@ -100,66 +108,68 @@ const getTopResult = (predictions) => {
   return { type: isDog ? "dog" : "cat", score: top.probability };
 };
 
-const init = async () => {
-  startBtn.disabled = true;
+const loadModel = async () => {
+  if (model) return;
+
   setStatus("모델 로딩 중...");
+  const modelURL = `${URL}model.json`;
+  const metadataURL = `${URL}metadata.json`;
 
-  try {
-    const modelURL = `${URL}model.json`;
-    const metadataURL = `${URL}metadata.json`;
-
-    model = await tmImage.load(modelURL, metadataURL);
-    maxPredictions = model.getTotalClasses();
-
-    webcam = new tmImage.Webcam(320, 320, true);
-    await webcam.setup();
-    await webcam.play();
-
-    webcamContainer.innerHTML = "";
-    webcamContainer.appendChild(webcam.canvas);
-
-    createLabelRows(model.getClassLabels().map((label) => ({ className: label })));
-
-    stopBtn.disabled = false;
-    setStatus("분석 중 · 카메라가 켜졌어요.");
-
-    const loop = async () => {
-      webcam.update();
-      await predict();
-      rafId = window.requestAnimationFrame(loop);
-    };
-
-    loop();
-  } catch (error) {
-    console.error(error);
-    setStatus("카메라 권한이 필요합니다. 브라우저 권한을 확인해 주세요.");
-    startBtn.disabled = false;
-  }
+  model = await tmImage.load(modelURL, metadataURL);
+  classLabels = model.getClassLabels();
+  createLabelRows(classLabels);
+  setStatus("사진을 업로드해 주세요.");
 };
 
-const predict = async () => {
-  if (!model || !webcam) return;
-  const prediction = await model.predict(webcam.canvas);
-  updateLabelRows(prediction);
-
-  const top = getTopResult(prediction);
-  setResult(top.type, top.score);
+const setPreview = (file) => {
+  if (objectUrl) {
+    URL.revokeObjectURL(objectUrl);
+  }
+  objectUrl = URL.createObjectURL(file);
+  previewImage.src = objectUrl;
+  imageContainer.classList.add("has-image");
 };
 
-const stop = () => {
-  if (rafId) {
-    window.cancelAnimationFrame(rafId);
-    rafId = null;
+const handleImage = async (file) => {
+  if (!file) return;
+  await loadModel();
+  setStatus("이미지 로딩 중...");
+  setPreview(file);
+
+  previewImage.onload = async () => {
+    setStatus("분석 중...");
+    const prediction = await model.predict(previewImage);
+    updateLabelRows(prediction);
+    const top = getTopResult(prediction);
+    setResult(top.type, top.score);
+    setStatus("완료 · 다른 사진도 업로드할 수 있어요.");
+  };
+};
+
+const resetUI = () => {
+  if (objectUrl) {
+    URL.revokeObjectURL(objectUrl);
+    objectUrl = null;
   }
-  if (webcam) {
-    webcam.stop();
-    webcam = null;
-  }
-  stopBtn.disabled = true;
-  startBtn.disabled = false;
-  setStatus("중지됨 · 다시 시작할 수 있어요.");
+  previewImage.removeAttribute("src");
+  imageContainer.classList.remove("has-image");
+  imageInput.value = "";
+  resetLabelRows();
   setResult("mixed", 0);
+  setStatus("사진을 업로드해 주세요.");
 };
 
-startBtn.addEventListener("click", init);
-stopBtn.addEventListener("click", stop);
+imageInput.addEventListener("change", (event) => {
+  const file = event.target.files?.[0];
+  handleImage(file).catch((error) => {
+    console.error(error);
+    setStatus("이미지를 처리할 수 없어요. 다른 파일을 선택해 주세요.");
+  });
+});
+
+resetBtn.addEventListener("click", resetUI);
+
+loadModel().catch((error) => {
+  console.error(error);
+  setStatus("모델을 불러오지 못했습니다. 새로고침해 주세요.");
+});

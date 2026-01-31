@@ -15,29 +15,31 @@
     <header class="hero">
       <div class="badge">AI 동물상 테스트</div>
       <h1>당신은 <span class="accent">강아지상</span>일까, <span class="accent">고양이상</span>일까?</h1>
-      <p class="subtitle">카메라로 얼굴을 비추면, 학습된 모델이 닮은 동물상을 분석해요.</p>
+      <p class="subtitle">사진을 업로드하면, 학습된 모델이 닮은 동물상을 분석해요.</p>
       <div class="cta-row">
-        <button id="start-btn" class="btn primary">테스트 시작</button>
-        <button id="stop-btn" class="btn ghost" disabled>중지</button>
+        <input id="image-input" class="file-input" type="file" accept="image/*" />
+        <label for="image-input" class="btn primary">사진 업로드</label>
+        <button id="reset-btn" class="btn ghost" type="button">초기화</button>
       </div>
-      <div id="status" class="status">대기 중 · 버튼을 눌러 시작하세요.</div>
+      <div id="status" class="status">모델 로딩 중...</div>
     </header>
 
     <section class="grid">
       <div class="card camera">
         <div class="card-header">
-          <h2>실시간 카메라</h2>
-          <span class="chip">Webcam</span>
+          <h2>사진 업로드</h2>
+          <span class="chip">Image</span>
         </div>
-        <div id="webcam-container" class="webcam-frame">
-          <div class="placeholder">
-            <span>📷</span>
-            <p>카메라가 여기에 표시됩니다</p>
+        <div id="image-container" class="image-frame">
+          <img id="preview-image" alt="업로드한 이미지 미리보기" />
+          <div class="placeholder" id="image-placeholder">
+            <span>🖼️</span>
+            <p>사진을 업로드하면 여기에 표시됩니다</p>
           </div>
         </div>
         <ul class="tips">
           <li>정면 응시 + 자연광이 정확도를 높여요.</li>
-          <li>모자를 쓰거나 손으로 얼굴을 가리면 결과가 달라질 수 있어요.</li>
+          <li>얼굴이 크게 나온 사진을 선택하면 정확도가 올라갑니다.</li>
         </ul>
       </div>
 
@@ -49,8 +51,8 @@
         <div class="result-hero">
           <div class="result-emoji" id="result-emoji">🧭</div>
           <div>
-            <div class="result-title" id="result-title">테스트를 시작해 주세요</div>
-            <div class="result-desc" id="result-desc">카메라가 켜지면 결과가 자동으로 업데이트됩니다.</div>
+            <div class="result-title" id="result-title">사진을 업로드해 주세요</div>
+            <div class="result-desc" id="result-desc">이미지가 들어오면 결과가 자동으로 표시됩니다.</div>
           </div>
         </div>
         <div id="label-container" class="labels"></div>

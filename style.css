@@ -90,6 +90,14 @@ body {
   flex-wrap: wrap;
 }
 
+.file-input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
 .btn {
   border: none;
   padding: 12px 22px;
@@ -166,7 +174,7 @@ body {
   font-weight: 600;
 }
 
-.webcam-frame {
+.image-frame {
   background: #111113;
   border-radius: 18px;
   overflow: hidden;
@@ -174,6 +182,21 @@ body {
   display: grid;
   place-items: center;
   position: relative;
+}
+
+.image-frame img {
+  width: 100%;
+  height: auto;
+  display: none;
+  object-fit: cover;
+}
+
+.image-frame.has-image img {
+  display: block;
+}
+
+.image-frame.has-image .placeholder {
+  display: none;
 }
 
 .webcam-frame canvas {
