@@ -13,6 +13,17 @@
 <body>
   <div class="bg-orbit"></div>
   <main class="page">
+    <nav class="nav">
+      <div class="logo">AnimalFace Lab</div>
+      <div class="nav-links">
+        <a href="#test">테스트</a>
+        <a href="#about">소개</a>
+        <a href="#how">사용법</a>
+        <a href="#faq">FAQ</a>
+        <a href="#privacy">정책</a>
+        <a href="#contact">문의</a>
+      </div>
+    </nav>
     <header class="hero">
       <div class="badge">AI 동물상 테스트</div>
       <h1>당신은 <span class="accent">강아지상</span>일까, <span class="accent">고양이상</span>일까?</h1>
@@ -23,9 +34,10 @@
         <button id="reset-btn" class="btn ghost" type="button">초기화</button>
       </div>
       <div id="status" class="status">모델 로딩 중...</div>
+      <div class="note">광고가 표시될 수 있습니다.</div>
     </header>
 
-    <section class="grid">
+    <section id="test" class="grid">
       <div class="card camera">
         <div class="card-header">
           <h2>사진 업로드</h2>
@@ -61,13 +73,126 @@
       </div>
     </section>
 
-    <section class="card story">
+    <section id="about" class="card story">
       <h3>동물상 테스트란?</h3>
       <p>
         동물상 테스트는 얼굴 이미지의 특징을 분석해 강아지상, 고양이상처럼
         닮은 이미지를 찾아주는 재미있는 체험입니다. 결과는 참고용이며, 촬영 환경에 따라
         달라질 수 있어요.
       </p>
+      <div class="story-grid">
+        <div>
+          <h4>이 사이트의 가치</h4>
+          <p>
+            동물상 테스트를 직접 체험해 보고, 어떤 요소가 결과에 영향을 주는지 이해할 수 있게
+            돕는 데 초점을 맞췄습니다. 사진 각도, 표정, 조명 같은 조건에 따라 결과가 달라지므로
+            비교해 보는 재미가 있습니다.
+          </p>
+          <p>
+            특히 본 사이트는 이미지를 서버에 보내지 않고 브라우저에서만 분석하기 때문에,
+            빠르고 사적인 체험을 제공하는 것을 목표로 합니다.
+          </p>
+        </div>
+        <div>
+          <h4>모델 소개</h4>
+          <p>
+            본 사이트는 Teachable Machine으로 학습한 강아지/고양이 이미지 분류 모델을 사용합니다.
+            추론은 브라우저에서 실행되며, 업로드한 이미지는 서버로 전송되지 않습니다.
+          </p>
+          <p>
+            모델은 일반적인 사진 조건을 기준으로 학습되었기 때문에, 조명이나 해상도 차이가
+            크면 결과가 흔들릴 수 있습니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card info">
+      <h3>결과 해석 가이드</h3>
+      <div class="story-grid">
+        <div>
+          <h4>강아지상 특징</h4>
+          <p>부드러운 인상, 둥근 눈매, 밝은 표정에서 더 높게 나올 수 있습니다.</p>
+        </div>
+        <div>
+          <h4>고양이상 특징</h4>
+          <p>또렷한 눈매, 날카로운 윤곽, 차분한 표정에서 더 높게 나올 수 있습니다.</p>
+        </div>
+        <div>
+          <h4>믹스 매력형</h4>
+          <p>확률 차이가 크지 않을 때 표시됩니다. 사진 각도를 바꿔보세요.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" class="card info">
+      <h3>사용 방법</h3>
+      <ol class="steps">
+        <li>정면 얼굴이 잘 보이는 사진을 선택합니다.</li>
+        <li>사진 업로드 버튼으로 이미지를 불러옵니다.</li>
+        <li>분석 결과와 확률 막대를 확인합니다.</li>
+        <li>다른 사진으로 비교하며 결과 차이를 확인합니다.</li>
+      </ol>
+      <div class="callout">
+        <strong>팁:</strong> 조명이 균일하고 얼굴이 크게 나온 사진일수록 정확도가 올라갑니다.
+      </div>
+    </section>
+
+    <section id="faq" class="card info">
+      <h3>자주 묻는 질문</h3>
+      <div class="faq">
+        <details>
+          <summary>결과가 계속 바뀌는 이유는 무엇인가요?</summary>
+          <p>표정, 조명, 각도에 따라 얼굴 특징이 다르게 인식될 수 있습니다. 여러 사진으로 비교해 보세요.</p>
+        </details>
+        <details>
+          <summary>사진이 서버로 업로드되나요?</summary>
+          <p>아니요. 이미지 분석은 브라우저에서만 이루어지며 서버로 전송되지 않습니다.</p>
+        </details>
+        <details>
+          <summary>모델 정확도는 얼마나 되나요?</summary>
+          <p>학습 데이터와 촬영 환경에 따라 달라집니다. 재미를 위한 참고 결과로 활용해 주세요.</p>
+        </details>
+        <details>
+          <summary>추천하는 사진 크기나 형식이 있나요?</summary>
+          <p>JPG, PNG 등 일반적인 이미지 형식을 지원합니다. 얼굴이 크게 나온 이미지를 권장합니다.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="card info">
+      <h3>샘플 비교 포인트</h3>
+      <p>
+        아래 조건을 달리해 테스트하면 모델이 어떤 특징에 민감한지 알 수 있습니다.
+      </p>
+      <ul class="tips">
+        <li>정면 vs 45도 각도</li>
+        <li>자연광 vs 실내등</li>
+        <li>무표정 vs 미소</li>
+        <li>얼굴 가까이 vs 상반신</li>
+      </ul>
+    </section>
+
+    <section id="privacy" class="card info">
+      <h3>개인정보 및 광고 안내</h3>
+      <p>
+        본 사이트는 업로드한 이미지를 서버에 저장하거나 전송하지 않습니다. 브라우저 내에서만
+        처리되며, 결과는 참고용으로 제공됩니다.
+      </p>
+      <p>
+        사이트에는 광고가 표시될 수 있습니다. 광고는 콘텐츠의 부가 정보로서 제공되며, 콘텐츠보다
+        과도하게 눈에 띄지 않도록 배치합니다.
+      </p>
+      <p>
+        서비스 품질을 개선하기 위해 익명 통계를 활용할 수 있으며, 개인을 식별할 수 있는 정보는
+        수집하지 않습니다.
+      </p>
+    </section>
+
+    <section id="contact" class="card info">
+      <h3>문의</h3>
+      <p>서비스 개선, 버그 신고, 제휴 문의는 아래 메일로 연락해 주세요.</p>
+      <p class="contact-email">gimdim194@gmai.com</p>
     </section>
   </main>
 
