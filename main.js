@@ -1,4 +1,4 @@
-const URL = "https://teachablemachine.withgoogle.com/models/Y1UzowJKE/";
+const MODEL_URL = "https://teachablemachine.withgoogle.com/models/Y1UzowJKE/";
 
 let model;
 let classLabels = [];
@@ -112,8 +112,8 @@ const loadModel = async () => {
   if (model) return;
 
   setStatus("모델 로딩 중...");
-  const modelURL = `${URL}model.json`;
-  const metadataURL = `${URL}metadata.json`;
+  const modelURL = `${MODEL_URL}model.json`;
+  const metadataURL = `${MODEL_URL}metadata.json`;
 
   model = await tmImage.load(modelURL, metadataURL);
   classLabels = model.getClassLabels();
@@ -123,9 +123,9 @@ const loadModel = async () => {
 
 const setPreview = (file) => {
   if (objectUrl) {
-    URL.revokeObjectURL(objectUrl);
+    window.URL.revokeObjectURL(objectUrl);
   }
-  objectUrl = URL.createObjectURL(file);
+  objectUrl = window.URL.createObjectURL(file);
   previewImage.src = objectUrl;
   imageContainer.classList.add("has-image");
 };
@@ -134,21 +134,32 @@ const handleImage = async (file) => {
   if (!file) return;
   await loadModel();
   setStatus("이미지 로딩 중...");
-  setPreview(file);
 
+  previewImage.onload = null;
+  previewImage.onerror = null;
   previewImage.onload = async () => {
-    setStatus("분석 중...");
-    const prediction = await model.predict(previewImage);
-    updateLabelRows(prediction);
-    const top = getTopResult(prediction);
-    setResult(top.type, top.score);
-    setStatus("완료 · 다른 사진도 업로드할 수 있어요.");
+    try {
+      setStatus("분석 중...");
+      const prediction = await model.predict(previewImage);
+      updateLabelRows(prediction);
+      const top = getTopResult(prediction);
+      setResult(top.type, top.score);
+      setStatus("완료 · 다른 사진도 업로드할 수 있어요.");
+    } catch (error) {
+      console.error(error);
+      setStatus("이미지를 처리할 수 없어요. 다른 파일을 선택해 주세요.");
+    }
   };
+  previewImage.onerror = () => {
+    setStatus("이미지를 불러오지 못했어요. 다른 파일을 선택해 주세요.");
+  };
+
+  setPreview(file);
 };
 
 const resetUI = () => {
   if (objectUrl) {
-    URL.revokeObjectURL(objectUrl);
+    window.URL.revokeObjectURL(objectUrl);
     objectUrl = null;
   }
   previewImage.removeAttribute("src");
